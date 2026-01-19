@@ -1,0 +1,24 @@
+name: Test Connector Generation
+
+on:
+  workflow_dispatch:
+    inputs:
+      spec-choice:
+        description: "Choose which OpenAPI spec to test"
+        required: true
+        type: choice
+        options:
+          - docusign-admin
+          - all
+        default: "docusign-admin"
+
+jobs:
+  # Test with DocuSign Admin API
+  test-docusign-admin:
+    if: inputs.spec-choice == 'docusign-admin' || inputs.spec-choice == 'all'
+    uses: ./.github/workflows/auto_generate_connector_template.yml
+    with:
+      openapi-url: "https://raw.githubusercontent.com/docusign/OpenAPI-Specifications/master/admin.rest.swagger-v2.1.json"
+      ballerina-version: "2201.13.0"
+      quiet-mode: true
+    secrets: inherit
