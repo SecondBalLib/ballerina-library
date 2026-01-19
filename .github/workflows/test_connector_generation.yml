@@ -8,17 +8,38 @@ on:
         required: true
         type: choice
         options:
-          - docusign-admin
-          - all
-        default: "docusign-admin"
+          - petstore
+          - openweathermap
+          - jsonplaceholder
+        default: "petstore"
 
 jobs:
-  # Test with DocuSign Admin API
-  test-docusign-admin:
-    if: inputs.spec-choice == 'docusign-admin' || inputs.spec-choice == 'all'
+  # Test with Petstore API (the most reliable test spec)
+  test-petstore:
+    if: inputs.spec-choice == 'petstore'
     uses: ./.github/workflows/auto_generate_connector_template.yml
     with:
-      openapi-url: "https://raw.githubusercontent.com/docusign/OpenAPI-Specifications/master/admin.rest.swagger-v2.1.json"
+      openapi-url: "https://petstore3.swagger.io/api/v3/openapi.json"
+      ballerina-version: "2201.13.0"
+      quiet-mode: true
+    secrets: inherit
+
+  # Test with OpenWeatherMap API
+  test-openweathermap:
+    if: inputs.spec-choice == 'openweathermap'
+    uses: ./.github/workflows/auto_generate_connector_template.yml
+    with:
+      openapi-url: "https://raw.githubusercontent.com/APIs-guru/openapi-directory/main/APIs/openweathermap.org/2.5/openapi.yaml"
+      ballerina-version: "2201.13.0"
+      quiet-mode: true
+    secrets: inherit
+
+  # Test with JSONPlaceholder API (simple REST API)
+  test-jsonplaceholder:
+    if: inputs.spec-choice == 'jsonplaceholder'
+    uses: ./.github/workflows/auto_generate_connector_template.yml
+    with:
+      openapi-url: "https://raw.githubusercontent.com/typicode/jsonplaceholder/master/public/openapi.json"
       ballerina-version: "2201.13.0"
       quiet-mode: true
     secrets: inherit
