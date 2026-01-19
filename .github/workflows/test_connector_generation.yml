@@ -8,38 +8,27 @@ on:
         required: true
         type: choice
         options:
+          - stripe
           - petstore
-          - openweathermap
-          - jsonplaceholder
-        default: "petstore"
+        default: "stripe"
 
 jobs:
-  # Test with Petstore API (the most reliable test spec)
+  # Test with Stripe API
+  test-stripe:
+    if: inputs.spec-choice == 'stripe'
+    uses: ./.github/workflows/auto_generate_connector_template.yml
+    with:
+      openapi-url: "https://raw.githubusercontent.com/api-specs-test/api-specs/main/openapi/stripe/stripe/2026-01-28.clover/openapi.yaml"
+      ballerina-version: "2201.13.0"
+      quiet-mode: true
+    secrets: inherit
+
+  # Test with Petstore API (backup reliable test spec)
   test-petstore:
     if: inputs.spec-choice == 'petstore'
     uses: ./.github/workflows/auto_generate_connector_template.yml
     with:
       openapi-url: "https://petstore3.swagger.io/api/v3/openapi.json"
-      ballerina-version: "2201.13.0"
-      quiet-mode: true
-    secrets: inherit
-
-  # Test with OpenWeatherMap API
-  test-openweathermap:
-    if: inputs.spec-choice == 'openweathermap'
-    uses: ./.github/workflows/auto_generate_connector_template.yml
-    with:
-      openapi-url: "https://raw.githubusercontent.com/APIs-guru/openapi-directory/main/APIs/openweathermap.org/2.5/openapi.yaml"
-      ballerina-version: "2201.13.0"
-      quiet-mode: true
-    secrets: inherit
-
-  # Test with JSONPlaceholder API (simple REST API)
-  test-jsonplaceholder:
-    if: inputs.spec-choice == 'jsonplaceholder'
-    uses: ./.github/workflows/auto_generate_connector_template.yml
-    with:
-      openapi-url: "https://raw.githubusercontent.com/typicode/jsonplaceholder/master/public/openapi.json"
       ballerina-version: "2201.13.0"
       quiet-mode: true
     secrets: inherit
