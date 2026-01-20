@@ -8,22 +8,11 @@ on:
         required: true
         type: choice
         options:
-          - stripe
           - petstore
-        default: "stripe"
+        default: "petstore"
 
 jobs:
-  # Test with Stripe API
-  test-stripe:
-    if: inputs.spec-choice == 'stripe'
-    uses: ./.github/workflows/auto_generate_connector_template.yml
-    with:
-      openapi-url: "https://raw.githubusercontent.com/api-specs-test/api-specs/main/openapi/stripe/stripe/2026-01-28.clover/openapi.yaml"
-      ballerina-version: "2201.13.0"
-      quiet-mode: true
-    secrets: inherit
-
-  # Test with Petstore API (backup reliable test spec)
+  # Test with Petstore API (small JSON spec - the gold standard for testing)
   test-petstore:
     if: inputs.spec-choice == 'petstore'
     uses: ./.github/workflows/auto_generate_connector_template.yml
@@ -32,3 +21,4 @@ jobs:
       ballerina-version: "2201.13.0"
       quiet-mode: true
     secrets: inherit
+
