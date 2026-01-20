@@ -4,21 +4,33 @@ on:
   workflow_dispatch:
     inputs:
       spec-choice:
-        description: "Choose which OpenAPI spec to test"
+        description: "Choose which connector to test"
         required: true
         type: choice
         options:
-          - petstore
-        default: "petstore"
+          - docusign-admin
+          - docusign-click
+        default: "docusign-admin"
 
 jobs:
-  # Test with Petstore API (small JSON spec - the gold standard for testing)
-  test-petstore:
-    if: inputs.spec-choice == 'petstore'
+  # Test with DocuSign Admin API
+  test-docusign-admin:
+    if: inputs.spec-choice == 'docusign-admin'
     uses: ./.github/workflows/auto_generate_connector_template.yml
     with:
-      openapi-url: "https://petstore3.swagger.io/api/v3/openapi.json"
+      openapi-url: "https://raw.githubusercontent.com/wso2/api-specs/main/openapi/docusign/admin/v2.1/openapi.yaml"
       ballerina-version: "2201.13.0"
       quiet-mode: true
     secrets: inherit
+
+  # Test with DocuSign Click API
+  test-docusign-click:
+    if: inputs.spec-choice == 'docusign-click'
+    uses: ./.github/workflows/auto_generate_connector_template.yml
+    with:
+      openapi-url: "https://raw.githubusercontent.com/wso2/api-specs/main/openapi/docusign/click/v1/openapi.yaml"
+      ballerina-version: "2201.13.0"
+      quiet-mode: true
+    secrets: inherit
+
 
