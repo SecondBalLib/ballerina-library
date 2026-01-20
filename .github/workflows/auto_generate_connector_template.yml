@@ -27,6 +27,11 @@ on:
         required: false
         type: boolean
         default: true
+      target-repository:
+        description: "Target repository to checkout (e.g., 'ballerina-library-test/module-ballerinax-docusign.dsadmin')"
+        required: false
+        type: string
+        default: ""
 
 jobs:
   auto-generate:
@@ -39,6 +44,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
+          repository: ${{ inputs.target-repository != '' && inputs.target-repository || github.repository }}
           token: ${{ secrets.BALLERINA_BOT_TOKEN }}
 
       - name: Setup Ballerina

@@ -9,11 +9,9 @@ on:
         type: choice
         options:
           - docusign-admin
-          - docusign-click
         default: "docusign-admin"
 
 jobs:
-  # Test with DocuSign Admin API
   test-docusign-admin:
     if: inputs.spec-choice == 'docusign-admin'
     uses: ./.github/workflows/auto_generate_connector_template.yml
@@ -21,16 +19,5 @@ jobs:
       openapi-url: "https://raw.githubusercontent.com/wso2/api-specs/main/openapi/docusign/admin/v2.1/openapi.yaml"
       ballerina-version: "2201.13.0"
       quiet-mode: true
+      target-repository: "ballerina-library-test/module-ballerinax-docusign.dsadmin"
     secrets: inherit
-
-  # Test with DocuSign Click API
-  test-docusign-click:
-    if: inputs.spec-choice == 'docusign-click'
-    uses: ./.github/workflows/auto_generate_connector_template.yml
-    with:
-      openapi-url: "https://raw.githubusercontent.com/wso2/api-specs/main/openapi/docusign/click/v1/openapi.yaml"
-      ballerina-version: "2201.13.0"
-      quiet-mode: true
-    secrets: inherit
-
-
