@@ -219,7 +219,7 @@ jobs:
 
           cat > Config.toml << EOF
           [connector_automator.code_fixer]
-          maxIterations = 3
+          maxIterations = 5
 
           [connector_automator.utils]
           apiKey = "${{ secrets.ANTHROPIC_API_KEY }}"
